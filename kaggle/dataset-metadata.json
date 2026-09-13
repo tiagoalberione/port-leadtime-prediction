@@ -14,5 +14,2247 @@
     "artificial intelligence",
     "time series analysis",
     "government"
+  ],
+  "expectedUpdateFrequency": "never",
+  "userSpecifiedSources": "Sources and transformations:\n- Estadia das Embarcações no Porto Sem Papel, Ministerio de Portos e Aeroportos / Porto Sem Papel: https://dados.transportes.gov.br/dataset/estadia-embarcacao. Port-call data were cleaned and transformed into one consolidated vessel call per row.\n- Portos no Porto Sem Papel - PSP, Ministerio de Portos e Aeroportos / Porto Sem Papel: https://dados.transportes.gov.br/dataset/portos-psp. State/UF was reconstructed by exact public port-code matching where available; region was derived from state.\n- Open-Meteo historical weather: https://open-meteo.com/. Lagged weather values are derived from Open-Meteo historical weather data.\nManually researched municipality and coordinate fields from the academic workflow are not redistributed in the public Kaggle files.",
+  "resources": [
+    {
+      "path": "README.md",
+      "description": "Dataset landing-page documentation describing the port-stay prediction problem, files, target, splits, leakage policy, limitations, citation, and attribution."
+    },
+    {
+      "path": "SOURCES.md",
+      "description": "Source provenance and licensing review for the public dataset, including Porto Sem Papel, the official PSP port reference, and Open-Meteo."
+    },
+    {
+      "path": "brazilian_port_calls_analytical_2023_2025.csv",
+      "description": "CSV analytical dataset for EDA and descriptive research. It contains 95 columns, including variables that are not necessarily valid arrival-time predictors.",
+      "schema": {
+        "fields": [
+          {
+            "name": "port_call_id",
+            "description": "Unique source DUV identifier of the consolidated vessel port call.",
+            "type": "integer"
+          },
+          {
+            "name": "port",
+            "description": "Brazilian port code where the vessel call occurred, standardized from the source bitrigrama field.",
+            "type": "string"
+          },
+          {
+            "name": "port_name",
+            "description": "Port name reported in the vessel-stay source record.",
+            "type": "string"
+          },
+          {
+            "name": "imo",
+            "description": "IMO vessel identifier when available in the public source.",
+            "type": "string"
+          },
+          {
+            "name": "vessel_id",
+            "description": "Vessel registration identifier from the public source.",
+            "type": "string"
+          },
+          {
+            "name": "vessel_name",
+            "description": "Vessel name as reported in the public source.",
+            "type": "string"
+          },
+          {
+            "name": "operation_type",
+            "description": "Declared operation motives for the port call, such as loading, unloading, anchorage, bunker, passenger, offshore, or maintenance.",
+            "type": "string"
+          },
+          {
+            "name": "source_port",
+            "description": "Reported previous port code for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "source_port_name",
+            "description": "Reported previous port name for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "destination_port",
+            "description": "Reported next port code for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "destination_port_name",
+            "description": "Reported next port name for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_port_ts",
+            "description": "Timestamp when the vessel arrived at the port; this is the prediction reference time.",
+            "type": "datetime"
+          },
+          {
+            "name": "berthing_ts",
+            "description": "Timestamp when the vessel berthed after arrival.",
+            "type": "datetime"
+          },
+          {
+            "name": "unberthing_ts",
+            "description": "Timestamp when the vessel unberthed after port operation.",
+            "type": "datetime"
+          },
+          {
+            "name": "departure_port_ts",
+            "description": "Timestamp when the vessel departed the port.",
+            "type": "datetime"
+          },
+          {
+            "name": "source_port_display",
+            "description": "Readable label for the reported previous port.",
+            "type": "string"
+          },
+          {
+            "name": "destination_port_display",
+            "description": "Readable label for the reported next port.",
+            "type": "string"
+          },
+          {
+            "name": "t_wait_for_berthing_h",
+            "description": "Waiting time in hours from port arrival to berthing.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_operation_h",
+            "description": "Operation time in hours from berthing to unberthing.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_post_operation_h",
+            "description": "Post-operation time in hours from unberthing to port departure.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_total_port_stay_h",
+            "description": "Total vessel port stay in hours, from arrival_port_ts to departure_port_ts.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_wait_for_berthing_d",
+            "description": "Duration t_wait_for_berthing_h expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_operation_d",
+            "description": "Duration t_operation_h expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_post_operation_d",
+            "description": "Duration t_post_operation_h expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_total_port_stay_d",
+            "description": "Total vessel port stay expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_wait_for_berthing_h",
+            "description": "Log-transformed version of t_wait_for_berthing_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_operation_h",
+            "description": "Log-transformed version of t_operation_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_post_operation_h",
+            "description": "Log-transformed version of t_post_operation_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_total_port_stay_h",
+            "description": "Log-transformed version of t_total_port_stay_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_wait_for_berthing_h_high",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_wait_for_berthing_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_wait_for_berthing_h_extreme",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_wait_for_berthing_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_operation_h_high",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_operation_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_operation_h_extreme",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_operation_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_total_port_stay_h_high",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_total_port_stay_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_total_port_stay_h_extreme",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_total_port_stay_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "arrival_year",
+            "description": "Calendar year of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_month",
+            "description": "Calendar month of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_quarter",
+            "description": "Calendar quarter of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_weekofyear",
+            "description": "ISO week number of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_day",
+            "description": "Day of month of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_dayofweek",
+            "description": "Day of week of arrival, where Monday is 0.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_hour",
+            "description": "Hour of day of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_is_weekend",
+            "description": "Indicator equal to 1 when arrival occurred on Saturday or Sunday.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_shift",
+            "description": "Arrival shift label: night, morning, afternoon, or evening.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_season",
+            "description": "Southern Hemisphere season for the arrival month.",
+            "type": "string"
+          },
+          {
+            "name": "op_abastecimento_bunker",
+            "description": "Boolean flag indicating whether the declared operation type includes abastecimento bunker.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_arribada",
+            "description": "Boolean flag indicating whether the declared operation type includes arribada.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_carga",
+            "description": "Boolean flag indicating whether the declared operation type includes carga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_descarga",
+            "description": "Boolean flag indicating whether the declared operation type includes descarga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_desembarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes desembarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_embarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes embarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio_ship_to_ship",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio ship to ship.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_marinha_brasil",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado marinha brasil.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_offshore",
+            "description": "Boolean flag indicating whether the declared operation type includes offshore.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_reparo_manutencao",
+            "description": "Boolean flag indicating whether the declared operation type includes reparo manutencao.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_solicitacao_certificado",
+            "description": "Boolean flag indicating whether the declared operation type includes solicitacao certificado.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_tipo_operacao_nao_mapeado",
+            "description": "Boolean flag indicating whether the declared operation type includes tipo operacao nao mapeado.",
+            "type": "boolean"
+          },
+          {
+            "name": "avg_wait_prev_20_calls_port",
+            "description": "Exploratory historical proxy from the EDA pipeline: avg wait prev 20 calls port.",
+            "type": "numeric"
+          },
+          {
+            "name": "avg_operation_prev_20_calls_port",
+            "description": "Exploratory historical proxy from the EDA pipeline: avg operation prev 20 calls port.",
+            "type": "numeric"
+          },
+          {
+            "name": "std_wait_prev_20_calls_port",
+            "description": "Exploratory historical proxy from the EDA pipeline: std wait prev 20 calls port.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_date",
+            "description": "Calendar date of arrival at the port.",
+            "type": "datetime"
+          },
+          {
+            "name": "arrivals_same_day_port",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals same day port.",
+            "type": "integer"
+          },
+          {
+            "name": "arrivals_prev_day_port",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev day port.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_prev_7d_avg_port",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 7d avg port.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean",
+            "description": "Realized same-day weather measure for the arrival date: temperature 2m mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_max",
+            "description": "Realized same-day weather measure for the arrival date: temperature 2m max.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_min",
+            "description": "Realized same-day weather measure for the arrival date: temperature 2m min.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_sum",
+            "description": "Realized same-day weather measure for the arrival date: precipitation sum.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum",
+            "description": "Realized same-day weather measure for the arrival date: rain sum.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours",
+            "description": "Realized same-day weather measure for the arrival date: precipitation hours.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max",
+            "description": "Realized same-day weather measure for the arrival date: wind speed 10m max.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max",
+            "description": "Realized same-day weather measure for the arrival date: wind gusts 10m max.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_direction_10m_dominant",
+            "description": "Realized same-day weather measure for the arrival date: wind direction 10m dominant.",
+            "type": "integer"
+          },
+          {
+            "name": "rain_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: precipitation sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_1d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_3d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_3d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_3d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_7d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_7d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_7d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "state",
+            "description": "Brazilian state/UF for the port, reconstructed from the official PSP port reference when an exact port-code match exists.",
+            "type": "string"
+          },
+          {
+            "name": "region",
+            "description": "Brazilian macro-region derived deterministically from the published state/UF.",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "path": "brazilian_port_calls_analytical_2023_2025.parquet",
+      "description": "Parquet analytical dataset for EDA and descriptive research. It preserves the same records and columns as the analytical CSV with typed storage.",
+      "schema": {
+        "fields": [
+          {
+            "name": "port_call_id",
+            "description": "Unique source DUV identifier of the consolidated vessel port call.",
+            "type": "integer"
+          },
+          {
+            "name": "port",
+            "description": "Brazilian port code where the vessel call occurred, standardized from the source bitrigrama field.",
+            "type": "string"
+          },
+          {
+            "name": "port_name",
+            "description": "Port name reported in the vessel-stay source record.",
+            "type": "string"
+          },
+          {
+            "name": "imo",
+            "description": "IMO vessel identifier when available in the public source.",
+            "type": "string"
+          },
+          {
+            "name": "vessel_id",
+            "description": "Vessel registration identifier from the public source.",
+            "type": "string"
+          },
+          {
+            "name": "vessel_name",
+            "description": "Vessel name as reported in the public source.",
+            "type": "string"
+          },
+          {
+            "name": "operation_type",
+            "description": "Declared operation motives for the port call, such as loading, unloading, anchorage, bunker, passenger, offshore, or maintenance.",
+            "type": "string"
+          },
+          {
+            "name": "source_port",
+            "description": "Reported previous port code for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "source_port_name",
+            "description": "Reported previous port name for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "destination_port",
+            "description": "Reported next port code for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "destination_port_name",
+            "description": "Reported next port name for the vessel call.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_port_ts",
+            "description": "Timestamp when the vessel arrived at the port; this is the prediction reference time.",
+            "type": "datetime"
+          },
+          {
+            "name": "berthing_ts",
+            "description": "Timestamp when the vessel berthed after arrival.",
+            "type": "datetime"
+          },
+          {
+            "name": "unberthing_ts",
+            "description": "Timestamp when the vessel unberthed after port operation.",
+            "type": "datetime"
+          },
+          {
+            "name": "departure_port_ts",
+            "description": "Timestamp when the vessel departed the port.",
+            "type": "datetime"
+          },
+          {
+            "name": "source_port_display",
+            "description": "Readable label for the reported previous port.",
+            "type": "string"
+          },
+          {
+            "name": "destination_port_display",
+            "description": "Readable label for the reported next port.",
+            "type": "string"
+          },
+          {
+            "name": "t_wait_for_berthing_h",
+            "description": "Waiting time in hours from port arrival to berthing.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_operation_h",
+            "description": "Operation time in hours from berthing to unberthing.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_post_operation_h",
+            "description": "Post-operation time in hours from unberthing to port departure.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_total_port_stay_h",
+            "description": "Total vessel port stay in hours, from arrival_port_ts to departure_port_ts.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_wait_for_berthing_d",
+            "description": "Duration t_wait_for_berthing_h expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_operation_d",
+            "description": "Duration t_operation_h expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_post_operation_d",
+            "description": "Duration t_post_operation_h expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_total_port_stay_d",
+            "description": "Total vessel port stay expressed in days for descriptive analysis.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_wait_for_berthing_h",
+            "description": "Log-transformed version of t_wait_for_berthing_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_operation_h",
+            "description": "Log-transformed version of t_operation_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_post_operation_h",
+            "description": "Log-transformed version of t_post_operation_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "log_t_total_port_stay_h",
+            "description": "Log-transformed version of t_total_port_stay_h, using log1p.",
+            "type": "numeric"
+          },
+          {
+            "name": "t_wait_for_berthing_h_high",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_wait_for_berthing_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_wait_for_berthing_h_extreme",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_wait_for_berthing_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_operation_h_high",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_operation_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_operation_h_extreme",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_operation_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_total_port_stay_h_high",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_total_port_stay_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "t_total_port_stay_h_extreme",
+            "description": "Descriptive severity flag derived from empirical quantiles of t_total_port_stay_h.",
+            "type": "boolean"
+          },
+          {
+            "name": "arrival_year",
+            "description": "Calendar year of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_month",
+            "description": "Calendar month of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_quarter",
+            "description": "Calendar quarter of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_weekofyear",
+            "description": "ISO week number of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_day",
+            "description": "Day of month of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_dayofweek",
+            "description": "Day of week of arrival, where Monday is 0.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_hour",
+            "description": "Hour of day of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_is_weekend",
+            "description": "Indicator equal to 1 when arrival occurred on Saturday or Sunday.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_shift",
+            "description": "Arrival shift label: night, morning, afternoon, or evening.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_season",
+            "description": "Southern Hemisphere season for the arrival month.",
+            "type": "string"
+          },
+          {
+            "name": "op_abastecimento_bunker",
+            "description": "Boolean flag indicating whether the declared operation type includes abastecimento bunker.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_arribada",
+            "description": "Boolean flag indicating whether the declared operation type includes arribada.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_carga",
+            "description": "Boolean flag indicating whether the declared operation type includes carga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_descarga",
+            "description": "Boolean flag indicating whether the declared operation type includes descarga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_desembarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes desembarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_embarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes embarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio_ship_to_ship",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio ship to ship.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_marinha_brasil",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado marinha brasil.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_offshore",
+            "description": "Boolean flag indicating whether the declared operation type includes offshore.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_reparo_manutencao",
+            "description": "Boolean flag indicating whether the declared operation type includes reparo manutencao.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_solicitacao_certificado",
+            "description": "Boolean flag indicating whether the declared operation type includes solicitacao certificado.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_tipo_operacao_nao_mapeado",
+            "description": "Boolean flag indicating whether the declared operation type includes tipo operacao nao mapeado.",
+            "type": "boolean"
+          },
+          {
+            "name": "avg_wait_prev_20_calls_port",
+            "description": "Exploratory historical proxy from the EDA pipeline: avg wait prev 20 calls port.",
+            "type": "numeric"
+          },
+          {
+            "name": "avg_operation_prev_20_calls_port",
+            "description": "Exploratory historical proxy from the EDA pipeline: avg operation prev 20 calls port.",
+            "type": "numeric"
+          },
+          {
+            "name": "std_wait_prev_20_calls_port",
+            "description": "Exploratory historical proxy from the EDA pipeline: std wait prev 20 calls port.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_date",
+            "description": "Calendar date of arrival at the port.",
+            "type": "datetime"
+          },
+          {
+            "name": "arrivals_same_day_port",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals same day port.",
+            "type": "integer"
+          },
+          {
+            "name": "arrivals_prev_day_port",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev day port.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_prev_7d_avg_port",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 7d avg port.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean",
+            "description": "Realized same-day weather measure for the arrival date: temperature 2m mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_max",
+            "description": "Realized same-day weather measure for the arrival date: temperature 2m max.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_min",
+            "description": "Realized same-day weather measure for the arrival date: temperature 2m min.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_sum",
+            "description": "Realized same-day weather measure for the arrival date: precipitation sum.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum",
+            "description": "Realized same-day weather measure for the arrival date: rain sum.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours",
+            "description": "Realized same-day weather measure for the arrival date: precipitation hours.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max",
+            "description": "Realized same-day weather measure for the arrival date: wind speed 10m max.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max",
+            "description": "Realized same-day weather measure for the arrival date: wind gusts 10m max.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_direction_10m_dominant",
+            "description": "Realized same-day weather measure for the arrival date: wind direction 10m dominant.",
+            "type": "integer"
+          },
+          {
+            "name": "rain_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: precipitation sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_1d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_3d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_3d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_3d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_7d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_7d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_7d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "state",
+            "description": "Brazilian state/UF for the port, reconstructed from the official PSP port reference when an exact port-code match exists.",
+            "type": "string"
+          },
+          {
+            "name": "region",
+            "description": "Brazilian macro-region derived deterministically from the published state/UF.",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "path": "brazilian_port_calls_model_ready_2023_2025.csv",
+      "description": "CSV arrival-time leakage-safe modeling dataset containing identifiers, the prediction timestamp, target, official temporal split, and 120 predictors.",
+      "schema": {
+        "fields": [
+          {
+            "name": "port_call_id",
+            "description": "Unique source DUV identifier of the consolidated vessel port call.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_port_ts",
+            "description": "Timestamp when the vessel arrived at the port; this is the prediction reference time.",
+            "type": "datetime"
+          },
+          {
+            "name": "t_total_port_stay_h",
+            "description": "Total vessel port stay in hours, from arrival_port_ts to departure_port_ts.",
+            "type": "numeric"
+          },
+          {
+            "name": "split",
+            "description": "Official temporal split label for reproducible modeling.",
+            "type": "string"
+          },
+          {
+            "name": "port",
+            "description": "Brazilian port code where the vessel call occurred, standardized from the source bitrigrama field.",
+            "type": "string"
+          },
+          {
+            "name": "region",
+            "description": "Brazilian macro-region derived deterministically from the published state/UF.",
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "description": "Brazilian state/UF for the port, reconstructed from the official PSP port reference when an exact port-code match exists.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_shift",
+            "description": "Arrival shift label: night, morning, afternoon, or evening.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_season",
+            "description": "Southern Hemisphere season for the arrival month.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_quarter",
+            "description": "Calendar quarter of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_weekofyear",
+            "description": "ISO week number of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_is_weekend",
+            "description": "Indicator equal to 1 when arrival occurred on Saturday or Sunday.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_hour_sin",
+            "description": "Sine encoding of arrival hour.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_hour_cos",
+            "description": "Cosine encoding of arrival hour.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_dow_sin",
+            "description": "Sine encoding of arrival day of week.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_dow_cos",
+            "description": "Cosine encoding of arrival day of week.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_month_sin",
+            "description": "Sine encoding of arrival month.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_month_cos",
+            "description": "Cosine encoding of arrival month.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: precipitation sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_1d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_3d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_3d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_3d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_7d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_7d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_7d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "op_abastecimento_bunker",
+            "description": "Boolean flag indicating whether the declared operation type includes abastecimento bunker.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_arribada",
+            "description": "Boolean flag indicating whether the declared operation type includes arribada.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_carga",
+            "description": "Boolean flag indicating whether the declared operation type includes carga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_descarga",
+            "description": "Boolean flag indicating whether the declared operation type includes descarga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_desembarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes desembarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_embarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes embarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio_ship_to_ship",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio ship to ship.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_marinha_brasil",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado marinha brasil.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_offshore",
+            "description": "Boolean flag indicating whether the declared operation type includes offshore.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_reparo_manutencao",
+            "description": "Boolean flag indicating whether the declared operation type includes reparo manutencao.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_solicitacao_certificado",
+            "description": "Boolean flag indicating whether the declared operation type includes solicitacao certificado.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_tipo_operacao_nao_mapeado",
+            "description": "Boolean flag indicating whether the declared operation type includes tipo operacao nao mapeado.",
+            "type": "boolean"
+          },
+          {
+            "name": "arrivals_prev_1d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_prev_3d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_prev_7d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_avg_prev_3d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals avg prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_max_prev_3d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_avg_prev_7d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals avg prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_max_prev_7d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_prev_1d",
+            "description": "Historical count or summary of vessel departures at the same port: departures prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_prev_3d",
+            "description": "Historical count or summary of vessel departures at the same port: departures prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_prev_7d",
+            "description": "Historical count or summary of vessel departures at the same port: departures prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_avg_prev_3d",
+            "description": "Historical count or summary of vessel departures at the same port: departures avg prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_max_prev_3d",
+            "description": "Historical count or summary of vessel departures at the same port: departures max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_avg_prev_7d",
+            "description": "Historical count or summary of vessel departures at the same port: departures avg prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_max_prev_7d",
+            "description": "Historical count or summary of vessel departures at the same port: departures max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "flow_balance_prev_1d",
+            "description": "Historical arrival-minus-departure flow balance at the same port: flow balance prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "flow_balance_prev_3d",
+            "description": "Historical arrival-minus-departure flow balance at the same port: flow balance prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "flow_balance_prev_7d",
+            "description": "Historical arrival-minus-departure flow balance at the same port: flow balance prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_count",
+            "description": "Historical known port performance statistic before arrival: port wait known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_mean",
+            "description": "Historical known port performance statistic before arrival: port wait known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_median",
+            "description": "Historical known port performance statistic before arrival: port wait known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_std",
+            "description": "Historical known port performance statistic before arrival: port wait known std.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_q90",
+            "description": "Historical known port performance statistic before arrival: port wait known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_q95",
+            "description": "Historical known port performance statistic before arrival: port wait known q95.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_count",
+            "description": "Historical known port performance statistic before arrival: port operation known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_mean",
+            "description": "Historical known port performance statistic before arrival: port operation known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_median",
+            "description": "Historical known port performance statistic before arrival: port operation known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_std",
+            "description": "Historical known port performance statistic before arrival: port operation known std.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_q90",
+            "description": "Historical known port performance statistic before arrival: port operation known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_q95",
+            "description": "Historical known port performance statistic before arrival: port operation known q95.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_count",
+            "description": "Historical known port performance statistic before arrival: port total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_mean",
+            "description": "Historical known port performance statistic before arrival: port total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_median",
+            "description": "Historical known port performance statistic before arrival: port total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_std",
+            "description": "Historical known port performance statistic before arrival: port total known std.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_q90",
+            "description": "Historical known port performance statistic before arrival: port total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_q95",
+            "description": "Historical known port performance statistic before arrival: port total known q95.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_waiting_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state waiting vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_berthed_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state berthed vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_present_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state present vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_backlog_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state backlog vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_entry_exit_delta_prev_1d",
+            "description": "Reconstructed operational state at the port before arrival: state entry exit delta prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_count",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_mean",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_median",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_q90",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_count",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_mean",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_median",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_q90",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_count",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_mean",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_median",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_q90",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_count",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_mean",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_median",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_q90",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_count",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_mean",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_median",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_q90",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_count",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_mean",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_median",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_q90",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_carga_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix carga share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_descarga_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix descarga share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_fundeio_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix fundeio share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_offshore_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix offshore share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_reparo_manutencao_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix reparo manutencao share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_carga_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix carga share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_descarga_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix descarga share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_fundeio_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix fundeio share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_offshore_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix offshore share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_reparo_manutencao_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix reparo manutencao share prev 7d.",
+            "type": "numeric"
+          }
+        ]
+      }
+    },
+    {
+      "path": "brazilian_port_calls_model_ready_2023_2025.parquet",
+      "description": "Parquet arrival-time leakage-safe modeling dataset containing the same records and columns as the model-ready CSV with typed storage.",
+      "schema": {
+        "fields": [
+          {
+            "name": "port_call_id",
+            "description": "Unique source DUV identifier of the consolidated vessel port call.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_port_ts",
+            "description": "Timestamp when the vessel arrived at the port; this is the prediction reference time.",
+            "type": "datetime"
+          },
+          {
+            "name": "t_total_port_stay_h",
+            "description": "Total vessel port stay in hours, from arrival_port_ts to departure_port_ts.",
+            "type": "numeric"
+          },
+          {
+            "name": "split",
+            "description": "Official temporal split label for reproducible modeling.",
+            "type": "string"
+          },
+          {
+            "name": "port",
+            "description": "Brazilian port code where the vessel call occurred, standardized from the source bitrigrama field.",
+            "type": "string"
+          },
+          {
+            "name": "region",
+            "description": "Brazilian macro-region derived deterministically from the published state/UF.",
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "description": "Brazilian state/UF for the port, reconstructed from the official PSP port reference when an exact port-code match exists.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_shift",
+            "description": "Arrival shift label: night, morning, afternoon, or evening.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_season",
+            "description": "Southern Hemisphere season for the arrival month.",
+            "type": "string"
+          },
+          {
+            "name": "arrival_quarter",
+            "description": "Calendar quarter of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_weekofyear",
+            "description": "ISO week number of arrival.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_is_weekend",
+            "description": "Indicator equal to 1 when arrival occurred on Saturday or Sunday.",
+            "type": "integer"
+          },
+          {
+            "name": "arrival_hour_sin",
+            "description": "Sine encoding of arrival hour.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_hour_cos",
+            "description": "Cosine encoding of arrival hour.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_dow_sin",
+            "description": "Sine encoding of arrival day of week.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_dow_cos",
+            "description": "Cosine encoding of arrival day of week.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_month_sin",
+            "description": "Sine encoding of arrival month.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrival_month_cos",
+            "description": "Cosine encoding of arrival month.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_sum_prev_1d",
+            "description": "Lagged historical weather measure before arrival: precipitation sum prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_1d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_1d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_3d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_3d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_3d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_3d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "rain_sum_prev_7d",
+            "description": "Lagged historical weather measure before arrival: rain sum prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "precipitation_hours_prev_7d",
+            "description": "Lagged historical weather measure before arrival: precipitation hours prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "temperature_2m_mean_prev_7d",
+            "description": "Lagged historical weather measure before arrival: temperature 2m mean prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_speed_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind speed 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "wind_gusts_10m_max_prev_7d",
+            "description": "Lagged historical weather measure before arrival: wind gusts 10m max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "op_abastecimento_bunker",
+            "description": "Boolean flag indicating whether the declared operation type includes abastecimento bunker.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_arribada",
+            "description": "Boolean flag indicating whether the declared operation type includes arribada.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_carga",
+            "description": "Boolean flag indicating whether the declared operation type includes carga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_descarga",
+            "description": "Boolean flag indicating whether the declared operation type includes descarga.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_desembarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes desembarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_embarque_passageiros",
+            "description": "Boolean flag indicating whether the declared operation type includes embarque passageiros.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_fundeio_ship_to_ship",
+            "description": "Boolean flag indicating whether the declared operation type includes fundeio ship to ship.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_marinha_brasil",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado marinha brasil.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_navio_estado_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes navio estado sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_offshore",
+            "description": "Boolean flag indicating whether the declared operation type includes offshore.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_reparo_manutencao",
+            "description": "Boolean flag indicating whether the declared operation type includes reparo manutencao.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_com_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos com operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_retirada_residuos_sem_operacao_comercial",
+            "description": "Boolean flag indicating whether the declared operation type includes retirada residuos sem operacao comercial.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_solicitacao_certificado",
+            "description": "Boolean flag indicating whether the declared operation type includes solicitacao certificado.",
+            "type": "boolean"
+          },
+          {
+            "name": "op_tipo_operacao_nao_mapeado",
+            "description": "Boolean flag indicating whether the declared operation type includes tipo operacao nao mapeado.",
+            "type": "boolean"
+          },
+          {
+            "name": "arrivals_prev_1d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_prev_3d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_prev_7d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_avg_prev_3d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals avg prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_max_prev_3d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_avg_prev_7d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals avg prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "arrivals_max_prev_7d",
+            "description": "Historical count or summary of vessel arrivals at the same port: arrivals max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_prev_1d",
+            "description": "Historical count or summary of vessel departures at the same port: departures prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_prev_3d",
+            "description": "Historical count or summary of vessel departures at the same port: departures prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_prev_7d",
+            "description": "Historical count or summary of vessel departures at the same port: departures prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_avg_prev_3d",
+            "description": "Historical count or summary of vessel departures at the same port: departures avg prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_max_prev_3d",
+            "description": "Historical count or summary of vessel departures at the same port: departures max prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_avg_prev_7d",
+            "description": "Historical count or summary of vessel departures at the same port: departures avg prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "departures_max_prev_7d",
+            "description": "Historical count or summary of vessel departures at the same port: departures max prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "flow_balance_prev_1d",
+            "description": "Historical arrival-minus-departure flow balance at the same port: flow balance prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "flow_balance_prev_3d",
+            "description": "Historical arrival-minus-departure flow balance at the same port: flow balance prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "flow_balance_prev_7d",
+            "description": "Historical arrival-minus-departure flow balance at the same port: flow balance prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_count",
+            "description": "Historical known port performance statistic before arrival: port wait known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_mean",
+            "description": "Historical known port performance statistic before arrival: port wait known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_median",
+            "description": "Historical known port performance statistic before arrival: port wait known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_std",
+            "description": "Historical known port performance statistic before arrival: port wait known std.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_q90",
+            "description": "Historical known port performance statistic before arrival: port wait known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_wait_known_q95",
+            "description": "Historical known port performance statistic before arrival: port wait known q95.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_count",
+            "description": "Historical known port performance statistic before arrival: port operation known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_mean",
+            "description": "Historical known port performance statistic before arrival: port operation known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_median",
+            "description": "Historical known port performance statistic before arrival: port operation known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_std",
+            "description": "Historical known port performance statistic before arrival: port operation known std.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_q90",
+            "description": "Historical known port performance statistic before arrival: port operation known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_operation_known_q95",
+            "description": "Historical known port performance statistic before arrival: port operation known q95.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_count",
+            "description": "Historical known port performance statistic before arrival: port total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_mean",
+            "description": "Historical known port performance statistic before arrival: port total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_median",
+            "description": "Historical known port performance statistic before arrival: port total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_std",
+            "description": "Historical known port performance statistic before arrival: port total known std.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_q90",
+            "description": "Historical known port performance statistic before arrival: port total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "port_total_known_q95",
+            "description": "Historical known port performance statistic before arrival: port total known q95.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_waiting_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state waiting vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_berthed_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state berthed vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_present_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state present vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_backlog_vessels_d_minus_1",
+            "description": "Reconstructed operational state at the port before arrival: state backlog vessels d minus 1.",
+            "type": "numeric"
+          },
+          {
+            "name": "state_entry_exit_delta_prev_1d",
+            "description": "Reconstructed operational state at the port before arrival: state entry exit delta prev 1d.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_count",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_mean",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_median",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_total_known_q90",
+            "description": "Historical known statistic for the same vessel before arrival: vessel total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_count",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_mean",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_median",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_wait_known_q90",
+            "description": "Historical known statistic for the same vessel before arrival: vessel wait known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_count",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_mean",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_median",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "vessel_port_total_known_q90",
+            "description": "Historical known statistic for the vessel at the same port before arrival: vessel port total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_count",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_mean",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_median",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "source_total_known_q90",
+            "description": "Historical known statistic associated with the reported previous port before arrival: source total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_count",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_mean",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_median",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "destination_total_known_q90",
+            "description": "Historical known statistic associated with the reported next port before arrival: destination total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_count",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known count.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_mean",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known mean.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_median",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known median.",
+            "type": "numeric"
+          },
+          {
+            "name": "route_total_known_q90",
+            "description": "Historical known statistic for the reported source-destination route before arrival: route total known q90.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_carga_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix carga share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_descarga_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix descarga share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_fundeio_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix fundeio share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_offshore_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix offshore share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_reparo_manutencao_share_prev_3d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix reparo manutencao share prev 3d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_carga_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix carga share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_descarga_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix descarga share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_fundeio_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix fundeio share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_offshore_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix offshore share prev 7d.",
+            "type": "numeric"
+          },
+          {
+            "name": "opmix_reparo_manutencao_share_prev_7d",
+            "description": "Recent historical operation mix share at the same port before arrival: opmix reparo manutencao share prev 7d.",
+            "type": "numeric"
+          }
+        ]
+      }
+    },
+    {
+      "path": "data_dictionary.csv",
+      "description": "Machine-readable documentation of source, transformation, prediction-time availability, modeling role, and publication status for every documented field."
+    },
+    {
+      "path": "dataset_build_summary.json",
+      "description": "Machine-readable build statistics, file hashes, row and column counts, split counts, and validation check summary."
+    }
   ]
 }

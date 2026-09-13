@@ -15,7 +15,9 @@ The goal is to estimate, at the moment a vessel arrives at a port, how long it w
 
 ## Motivation
 
-Port stay time is a relevant component of maritime lead time. Better estimates of its uncertainty can support supply chain planning, service-level discussions, and scenario analysis for safety stock and working capital. In this project, the connection to inventory is treated as a simulation exercise, not as observed financial savings.
+Port stay time is a relevant component of maritime lead time. Better estimates of its uncertainty can support supply chain planning, service-level discussions, and scenario analysis for safety stock and working capital.
+
+In this project, the connection to inventory is treated as a simulation exercise, not as observed financial savings.
 
 ## Dataset
 
@@ -37,15 +39,35 @@ Main sources and inputs:
 
 The public source URLs used during the project are listed in `data/downloaded/urls.txt`. See `data/README.md` for the data policy and regeneration notes.
 
-Public Kaggle dataset:
+### Public Kaggle Dataset
+
+A cleaned and documented public release of the processed dataset is available on Kaggle:
+
 https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-calls-lead-time-2023-2025
 
-The Kaggle release provides two views:
+The Kaggle release provides two complementary views:
 
-- an analytical dataset for EDA and statistical exploration;
-- a model-ready dataset with leakage-safe predictors and the official temporal splits.
+- **Analytical dataset:** intended for exploratory data analysis, descriptive statistics, and broader research use.
+- **Model-ready dataset:** contains arrival-time-safe predictors, the target variable, and the official temporal split used by the modeling workflow.
 
-Both CSV and Parquet formats are available, together with a machine-readable data dictionary and source/provenance documentation.
+Both datasets are available in CSV and Parquet formats.
+
+The release also includes:
+
+- a machine-readable data dictionary;
+- source and provenance documentation;
+- build metadata;
+- the official train, validation, calibration, and final-test split;
+- explicit documentation of leakage-sensitive variables.
+
+The public Kaggle release is intentionally different from the full historical academic snapshot. Geography fields derived manually during the original research were not redistributed. State information was reconstructed from an official public port reference, region was derived deterministically from state, and municipality and manually researched coordinates were excluded from the public dataset.
+
+See:
+
+- `kaggle/README.md`
+- `kaggle/SOURCES.md`
+- `kaggle/DATA_DICTIONARY.md`
+- `kaggle/dataset/data_dictionary.csv`
 
 ## Methodology
 
@@ -103,27 +125,41 @@ data/
   downloaded/           Downloaded source files and source URL references
   interim/              Generated intermediate datasets, ignored by Git
   processed/            Generated analytical dataset, ignored by Git
+
 kaggle/
-  dataset/              Kaggle documentation and data dictionary
-  reference/            Public reference data used for redistribution
-  notebooks/            Notes for future Kaggle notebooks
+  README.md              Kaggle release overview and build instructions
+  SOURCES.md             Source provenance and licensing review
+  DATA_DICTIONARY.md     Documentation for the machine-readable dictionary
+  dataset/
+    README.md            Dataset-specific documentation
+    data_dictionary.csv  Machine-readable field documentation
+    output/              Generated Kaggle datasets, ignored by Git
+  reference/             Public reference data used for redistribution
+  notebooks/             Notes and support files for future Kaggle notebooks
+
 notebooks/
   01_eda_cap3_final.ipynb
   02_modeling_cap4_final.ipynb
+
 pipelines/
-  build_eda_base.py     Rebuilds the analytical dataset
+  build_eda_base.py      Rebuilds the analytical dataset
+
 scripts/
-  run_cap4_rebuild.py   Canonical heavy rebuild of Chapter 4 artifacts
+  run_cap4_rebuild.py    Canonical heavy rebuild of Chapter 4 artifacts
   build_kaggle_dataset.py
-src/                    Data preparation and feature engineering code
-results/                Tracked numerical artifacts used to audit thesis results
-outputs/                Generated figures and tables, ignored by Git
-tests/                  Smoke and anti-leakage tests
+                         Builds and validates the public Kaggle dataset package
+
+src/                     Data preparation and feature engineering code
+results/                 Tracked numerical artifacts used to audit thesis results
+outputs/                 Generated figures and tables, ignored by Git
+tests/                   Smoke, reproducibility, and anti-leakage tests
 ```
 
 ## Installation
 
-The audited environment used Python 3.11.
+The audited environment uses Python 3.11.
+
+Create a dedicated environment:
 
 ```bash
 conda create -n port-leadtime python=3.11
@@ -131,15 +167,15 @@ conda activate port-leadtime
 pip install -r requirements.txt
 ```
 
-You can also run commands through conda without activating the environment:
+You can also run commands through Conda without activating the environment:
 
 ```bash
 conda run -n port-leadtime python --version
 ```
 
-## Running The Project
+## Running the Project
 
-Rebuild the analytical dataset:
+### Rebuild the analytical dataset
 
 ```bash
 conda run -n port-leadtime python pipelines/build_eda_base.py
@@ -151,22 +187,44 @@ Expected main output:
 data/processed/eda_base.parquet
 ```
 
-Run the lightweight validation suite:
+### Run the validation suite
 
 ```bash
-conda run -n mbausp python -m pytest -q
+conda run -n port-leadtime python -m pytest -q
 ```
+
+### Run the thesis notebooks
 
 The official notebooks are:
 
 - `notebooks/01_eda_cap3_final.ipynb`: final Chapter 3 exploratory analysis.
 - `notebooks/02_modeling_cap4_final.ipynb`: final Chapter 4 modeling, quantile regression, uncertainty analysis, and safety-stock simulation.
 
+### Rebuild the Chapter 4 artifacts
+
 The canonical script below preserves the heavier historical rebuild used to generate the tracked `results/cap4_rebuild/` artifacts:
 
 ```bash
-conda run -n mbausp python scripts/run_cap4_rebuild.py
+conda run -n port-leadtime python scripts/run_cap4_rebuild.py
 ```
+
+### Build the public Kaggle dataset
+
+The public analytical and model-ready datasets can be regenerated with:
+
+```bash
+conda run -n port-leadtime python scripts/build_kaggle_dataset.py
+```
+
+Generated files are written under:
+
+```text
+kaggle/dataset/output/
+```
+
+The generated output directory is intentionally ignored by Git because the published dataset is hosted on Kaggle.
+
+For release-specific documentation, provenance, feature definitions, and licensing notes, see the `kaggle/` directory.
 
 ## Reproducibility
 
@@ -176,26 +234,43 @@ Tracked raw data are included to preserve the academic snapshot. Intermediate fi
 
 The tracked `results/` files are intentionally kept because they document the numerical evidence used in the final thesis review.
 
+The public Kaggle release preserves the core analytical population, target definition, official temporal split, weather enrichment, and temporally safe historical-feature logic, while applying additional redistribution and provenance safeguards to selected geographic attributes.
+
+For this reason, the Kaggle release should be treated as the recommended public dataset for reuse, while the repository preserves the broader academic workflow and historical reproducibility context.
+
 ## Limitations
 
 - The public data sources may change their download format or availability over time.
 - The project models port stay duration, not the complete end-to-end logistics lead time.
 - Operation-type flags are treated as known at arrival time as a modeling premise.
 - Weather variables from the arrival day are useful for EDA but are not used as substantive final predictors unless reconstructed as lagged historical information.
+- Historical aggregate features must respect temporal availability and are generated using walk-forward logic.
 - The safety-stock and working-capital analysis is a scenario simulation, not an observed company result.
 - The workflow is designed for academic reproducibility, not for low-latency production inference.
+- A small number of port calls in the public Kaggle dataset do not receive `state` and `region` values because their port codes do not have an exact match in the official public reference. No fuzzy or manual matching is applied in the public release.
 
 ## Future Work
 
-Potential extensions include publishing reproducible Kaggle notebooks, evaluating additional models, updating the public-data snapshot, and comparing the port-stay proxy with complete logistics lead-time data if such data become available.
+Potential extensions include:
+
+- publishing reproducible Kaggle notebooks for EDA and baseline modeling;
+- evaluating additional regression and probabilistic modeling approaches;
+- updating the public-data snapshot as new years become available;
+- improving automated source ingestion and validation;
+- evaluating calibration and uncertainty estimation techniques beyond the current quantile-regression workflow;
+- comparing the port-stay proxy with complete logistics lead-time data if such data become available.
 
 ## License
 
-Code: MIT License.
+Project code is released under the MIT License.
 
-Public Kaggle dataset: CC BY 4.0.
+The public Kaggle dataset is distributed under CC BY 4.0:
 
-Original public sources remain subject to their respective terms and attribution requirements. See `kaggle/SOURCES.md` for provenance and source-specific licensing notes.
+https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-calls-lead-time-2023-2025
+
+Original public data sources remain subject to their respective terms, attribution requirements, and availability.
+
+See `kaggle/SOURCES.md` for the detailed provenance and source-specific licensing review used for the public dataset release.
 
 ## Citation
 
@@ -204,3 +279,5 @@ If you use this project, cite it through `CITATION.cff` or with:
 ```text
 Alberione, T. Port Lead Time Prediction: vessel port stay modeling for Brazilian public port data. MBA thesis project, University of Sao Paulo, 2026.
 ```
+
+When using the public dataset, please also cite the Kaggle dataset page and preserve the source attribution described in `kaggle/SOURCES.md`.

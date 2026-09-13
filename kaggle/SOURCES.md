@@ -1,6 +1,6 @@
 # Sources
 
-This file separates the data that are redistributed in the Kaggle package from historical inputs preserved for academic reproducibility. The Kaggle build reads the official project snapshot locally. Raw vessel-stay and weather source files are not redistributed in the Kaggle upload; cleaned and derived values from those sources are redistributed in the generated dataset files. The official PSP port reference snapshot `kaggle/reference/portos_no_porto_sem_papel_setembro_2021.csv` is versioned in GitHub for auditability because it is the public reference used to reconstruct `state`.
+This file separates the data redistributed in the published Kaggle CSV from historical inputs preserved for academic reproducibility. The Kaggle build reads the official project snapshot locally. Raw vessel-stay and weather source files are not redistributed in the Kaggle upload; cleaned and derived values from those sources are redistributed in `brazilian_port_calls_model_ready_2023_2025.csv`. The official PSP port reference snapshot `kaggle/reference/portos_no_porto_sem_papel_setembro_2021.csv` is versioned in GitHub for auditability because it is the public reference used to reconstruct `state`.
 
 ## Redistributed Data Sources
 
@@ -32,7 +32,7 @@ The original academic workflow used `data/raw/ports/port.csv` with manually enri
 - `latitude`
 - `longitude`
 
-Those geography fields were manually researched during the thesis process and are preserved only as historical/internal inputs. They are not treated as Porto Sem Papel fields. The Kaggle v1 public outputs do not redistribute `city`, `latitude`, `longitude`, `latitude_r`, `longitude_r`, `port_display`, `port_name_ref`, or `port_display_ref` from that internal reference. Published `state` is rebuilt from the official PSP reference, and published `region` is derived from `state`.
+Those geography fields were manually researched during the thesis process and are preserved only as historical/internal inputs. They are not treated as Porto Sem Papel fields. The published Kaggle CSV does not redistribute `city`, `latitude`, `longitude`, `latitude_r`, `longitude_r`, `port_display`, `port_name_ref`, or `port_display_ref` from that internal reference. Published `state` is rebuilt from the official PSP reference, and published `region` is derived from `state`.
 
 The historical coordinates were used internally to query Open-Meteo weather data. The coordinates are not redistributed; Open-Meteo-derived weather values remain in the public outputs with attribution.
 
@@ -62,4 +62,4 @@ The historical coordinates were used internally to query Open-Meteo weather data
 
 The repository code remains under the MIT License. The dataset license is separate from the code license, and the original sources remain subject to their own terms.
 
-With manual Google Maps-derived geography removed from public outputs, the generated Kaggle dataset is technically suitable for publication under CC BY 4.0, provided attribution is maintained for Porto Sem Papel / Ministerio de Portos e Aeroportos and Open-Meteo.
+With manual Google Maps-derived geography removed from the published Kaggle CSV, the generated Kaggle dataset is technically suitable for publication under CC BY 4.0, provided attribution is maintained for Porto Sem Papel / Ministerio de Portos e Aeroportos and Open-Meteo.

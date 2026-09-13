@@ -15,10 +15,16 @@ https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-lead-time-2023-202
 Titles:
 
 ```text
-Brazilian Port Lead Time - EDA and Leakage-Aware Baseline Modeling
-Brazilian Port Lead Time - Quantile Regression & Uncertainty
-Brazilian Port Lead Time - Safety Stock Application
+Brazilian Port Lead Time CSV Baseline
+Brazilian Port Lead Time Quantile Uncertainty
+Brazilian Port Lead Time Safety Stock Application
 ```
+
+Public Kaggle URLs:
+
+- https://www.kaggle.com/code/tiagoalberione/brazilian-port-lead-time-csv-baseline
+- https://www.kaggle.com/code/tiagoalberione/brazilian-port-lead-time-quantile-uncertainty
+- https://www.kaggle.com/code/tiagoalberione/brazilian-port-lead-time-safety-stock-application
 
 ## Objective
 
@@ -52,6 +58,6 @@ The notebooks are intentionally small and educational. They do not reproduce the
 
 The models use only columns present in the model-ready CSV after excluding `port_call_id`, `arrival_port_ts`, `t_total_port_stay_h`, and `split`. They keep `final_test` untouched until the final locked evaluation.
 
-## Future Notebooks
+## Further Work
 
 Later public work may add deeper scenario variants, but the initial public notebook series is complete with EDA, quantile uncertainty, and one illustrative supply-chain application.

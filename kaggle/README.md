@@ -1,30 +1,30 @@
-# Kaggle Data Release Preparation
+# Kaggle Published Data Release
 
-This folder prepares a local Kaggle-ready data package for the public repository. It does not publish anything to Kaggle and does not create a remote dataset.
+This folder documents the published Kaggle data release and the local tooling used to rebuild and validate it. The repository does not upload to Kaggle automatically.
 
-## What Will Be Published
+## Published Kaggle Dataset
 
-The future Kaggle upload should contain the generated files under `kaggle/dataset/output/`:
+The current public Kaggle dataset is:
 
-- `brazilian_port_calls_analytical_2023_2025.csv`
-- `brazilian_port_calls_analytical_2023_2025.parquet`
 - `brazilian_port_calls_model_ready_2023_2025.csv`
-- `brazilian_port_calls_model_ready_2023_2025.parquet`
-- `dataset_build_summary.json`
 
-The repository tracks the build script, metadata, source notes, and data dictionary. The generated output folder is intentionally ignored by Git.
+https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-lead-time-2023-2025
+
+The Kaggle dataset intentionally contains exactly one public data file: a leakage-aware model-ready CSV with 129,625 rows, 124 columns, and 120 predictors. Detailed documentation stays in GitHub through this directory, including source notes, field documentation, metadata generation, and leakage/provenance review.
+
+The local build may create additional artifacts under `kaggle/dataset/output/`, including analytical, Parquet, and JSON summary files. Those files are used for local validation and historical reproducibility; they are not part of the current Kaggle upload.
 
 ## Dataset Views
 
-The analytical dataset is a cleaned port-call table for EDA, statistical analysis, lead-time exploration, and feature ideation. It has 95 columns. It may include post-arrival timestamps, realized durations, and same-day realized weather variables. Those columns are documented and must not be treated as arrival-time predictors.
+The published model-ready dataset is for supervised machine learning. It has 124 columns: `port_call_id`, `arrival_port_ts`, the official target `t_total_port_stay_h`, the official temporal `split`, and 120 predictors from the Chapter 4 `ENRICHED_SAFE_HISTORY` feature registry.
 
-The model-ready dataset is for supervised machine learning. It has 124 columns: `port_call_id`, `arrival_port_ts`, the official target `t_total_port_stay_h`, the official temporal `split`, and 120 predictors from the Chapter 4 `ENRICHED_SAFE_HISTORY` feature registry.
+The repository can also generate a local analytical artifact for EDA, statistical analysis, lead-time exploration, and feature ideation. That local artifact may include post-arrival timestamps, realized durations, and same-day realized weather variables, and those columns must not be treated as arrival-time predictors. It is not a current Kaggle data file.
 
-The model-ready dataset is not simply a subset of the analytical dataset. It excludes analytical columns that would leak future information and adds reconstructed historical features created specifically for leakage-safe modeling.
+The model-ready dataset is not simply a subset of the local analytical artifact. It excludes analytical columns that would leak future information and adds reconstructed historical features created specifically for leakage-safe modeling.
 
 ## Geographic Data Provenance
 
-Public Kaggle outputs do not redistribute the manually enriched `city`, `latitude`, or `longitude` fields from the historical `data/raw/ports/port.csv` file. Those coordinates were used internally during the academic weather-enrichment process, but they are not published in the Kaggle v1 files.
+The published Kaggle CSV does not redistribute the manually enriched `city`, `latitude`, or `longitude` fields from the historical `data/raw/ports/port.csv` file. Those coordinates were used internally during the academic weather-enrichment process, but they are not published in the current Kaggle file.
 
 Published `state` is reconstructed by exact port-code joins against the official `Portos no Porto Sem Papel - PSP` public reference where available. Published `region` is derived deterministically from `state` through a Brazilian UF-to-macro-region mapping. `city` is omitted from Kaggle v1 because no compatible exact code-level public mapping was incorporated in this release.
 
@@ -44,7 +44,7 @@ From the repository root:
 conda run -n port-leadtime python scripts/build_kaggle_dataset.py
 ```
 
-If `data/processed/eda_base.parquet` is missing, the script rebuilds it through `pipelines/build_eda_base.py` before creating the Kaggle files.
+If `data/processed/eda_base.parquet` is missing, the script rebuilds it through `pipelines/build_eda_base.py` before creating the local Kaggle build outputs.
 
 ## Validate
 
@@ -54,7 +54,7 @@ Run:
 conda run -n port-leadtime python -m pytest -q
 ```
 
-The build script also validates row counts, schema, temporal ranges, target values, duplicated identifiers, split completeness, CSV-Parquet consistency, and anti-leakage guards.
+The build script also validates row counts, schema, temporal ranges, target values, duplicated identifiers, split completeness, local CSV-Parquet consistency, and anti-leakage guards. The CSV-Parquet check is local validation only; the published Kaggle dataset contains the CSV.
 
 ## Official Splits
 
@@ -81,7 +81,7 @@ This means the features may incorporate outcomes from previous port calls that h
 
 ## Future Updates
 
-For a future dataset version, update raw source snapshots only after documenting source changes, rebuild `data/processed/eda_base.parquet`, rerun the Kaggle build script and tests, review `dataset_build_summary.json`, and verify source-license compatibility before any Kaggle publication.
+For a future dataset version, update raw source snapshots only after documenting source changes, rebuild `data/processed/eda_base.parquet`, rerun the Kaggle build script and tests, review local build summaries, and verify source-license compatibility before publishing a new Kaggle version.
 
 ## License Review
 

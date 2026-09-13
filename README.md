@@ -43,22 +43,19 @@ The public source URLs used during the project are listed in `data/downloaded/ur
 
 A cleaned and documented public release of the processed dataset is available on Kaggle:
 
-https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-calls-lead-time-2023-2025
+https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-lead-time-2023-2025
 
-The Kaggle release provides two complementary views:
+The recommended public release intentionally favors a single easy-to-use CSV:
 
-- **Analytical dataset:** intended for exploratory data analysis, descriptive statistics, and broader research use.
-- **Model-ready dataset:** contains arrival-time-safe predictors, the target variable, and the official temporal split used by the modeling workflow.
+- `brazilian_port_calls_model_ready_2023_2025.csv`
 
-Both datasets are available in CSV and Parquet formats.
+It contains 129,625 rows and 124 columns:
 
-The release also includes:
+- 4 non-predictor columns: `port_call_id`, `arrival_port_ts`, `t_total_port_stay_h`, and `split`;
+- 120 leakage-aware predictors available at vessel arrival or reconstructed from prior historical information;
+- the official train, validation, calibration, and final-test split in the CSV.
 
-- a machine-readable data dictionary;
-- source and provenance documentation;
-- build metadata;
-- the official train, validation, calibration, and final-test split;
-- explicit documentation of leakage-sensitive variables.
+Detailed provenance, source review, field documentation, and leakage notes are maintained in this GitHub repository rather than uploaded as separate Kaggle data files.
 
 The public Kaggle release is intentionally different from the full historical academic snapshot. Geography fields derived manually during the original research were not redistributed. State information was reconstructed from an official public port reference, region was derived deterministically from state, and municipality and manually researched coordinates were excluded from the public dataset.
 
@@ -68,6 +65,23 @@ See:
 - `kaggle/SOURCES.md`
 - `kaggle/DATA_DICTIONARY.md`
 - `kaggle/dataset/data_dictionary.csv`
+
+## Public Kaggle Notebooks
+
+The public notebook series follows the learning path:
+
+```text
+point estimate -> predictive uncertainty -> illustrative supply-chain application
+```
+
+- **01 - EDA and point prediction:** Brazilian Port Lead Time CSV Baseline  
+  https://www.kaggle.com/code/tiagoalberione/brazilian-port-lead-time-csv-baseline
+- **02 - Quantile regression and uncertainty:** Brazilian Port Lead Time Quantile Uncertainty  
+  https://www.kaggle.com/code/tiagoalberione/brazilian-port-lead-time-quantile-uncertainty
+- **03 - Safety-stock application:** Brazilian Port Lead Time Safety Stock Application  
+  https://www.kaggle.com/code/tiagoalberione/brazilian-port-lead-time-safety-stock-application
+
+These notebooks use the sanitized public Kaggle dataset and are reproducible educational examples. Their metrics may differ from the historical thesis results preserved under `results/`.
 
 ## Methodology
 
@@ -96,6 +110,8 @@ Intervals are implemented as half-open ranges. The final test period is not used
 
 ## Main Results
 
+This section documents the historical thesis/audited results, not the public Kaggle notebook baseline metrics.
+
 The final point-model comparison is preserved in `results/cap4_rebuild/point_model_comparison_final.csv` and `results/cap4_notebook_run/final_comparison.csv`.
 
 The main final result preserved by the audited artifacts is:
@@ -117,6 +133,8 @@ The safety-stock simulation is preserved in:
 
 These outputs should be read as academic scenario analysis. The dataset does not contain real item demand, unit cost, inventory, or full logistics lead time.
 
+The public Kaggle notebooks use the sanitized public dataset and simplified, fixed educational protocols. They are not intended to reproduce every thesis model or to replace the audited historical result files.
+
 ## Repository Structure
 
 ```text
@@ -133,9 +151,12 @@ kaggle/
   dataset/
     README.md            Dataset-specific documentation
     data_dictionary.csv  Machine-readable field documentation
-    output/              Generated Kaggle datasets, ignored by Git
+    output/              Generated local validation artifacts, ignored by Git
   reference/             Public reference data used for redistribution
-  notebooks/             Notes and support files for future Kaggle notebooks
+  notebooks/
+    01_brazilian_port_lead_time_eda_baseline.ipynb
+    02_brazilian_port_lead_time_quantile_uncertainty.ipynb
+    03_brazilian_port_lead_time_safety_stock.ipynb
 
 notebooks/
   01_eda_cap3_final.ipynb
@@ -210,7 +231,7 @@ conda run -n port-leadtime python scripts/run_cap4_rebuild.py
 
 ### Build the public Kaggle dataset
 
-The public analytical and model-ready datasets can be regenerated with:
+The public model-ready CSV and additional local validation artifacts can be regenerated with:
 
 ```bash
 conda run -n port-leadtime python scripts/build_kaggle_dataset.py
@@ -223,6 +244,8 @@ kaggle/dataset/output/
 ```
 
 The generated output directory is intentionally ignored by Git because the published dataset is hosted on Kaggle.
+
+The current Kaggle publication contains only `brazilian_port_calls_model_ready_2023_2025.csv`. Other generated files may exist locally for validation or historical reproducibility, but they are not part of the current Kaggle upload.
 
 For release-specific documentation, provenance, feature definitions, and licensing notes, see the `kaggle/` directory.
 
@@ -253,7 +276,6 @@ For this reason, the Kaggle release should be treated as the recommended public 
 
 Potential extensions include:
 
-- publishing reproducible Kaggle notebooks for EDA and baseline modeling;
 - evaluating additional regression and probabilistic modeling approaches;
 - updating the public-data snapshot as new years become available;
 - improving automated source ingestion and validation;
@@ -266,7 +288,7 @@ Project code is released under the MIT License.
 
 The public Kaggle dataset is distributed under CC BY 4.0:
 
-https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-calls-lead-time-2023-2025
+https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-lead-time-2023-2025
 
 Original public data sources remain subject to their respective terms, attribution requirements, and availability.
 

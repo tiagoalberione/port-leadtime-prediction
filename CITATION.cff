@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it as below."
+title: "Port Lead Time Prediction"
+authors:
+  - family-names: "Alberione"
+    given-names: "Tiago"
+type: software
+date-released: 2026-09-13
+version: "1.0.0"
+repository-code: "https://github.com/tiagoalberione/port-leadtime-prediction"
+abstract: "Academic workflow for modeling vessel port stay duration in Brazilian ports using public maritime data, temporal features, weather enrichment, point regression, quantile regression, and safety-stock scenario analysis."
+keywords:
+  - "port lead time"
+  - "vessel turnaround time"
+  - "machine learning"
+  - "supply chain"
+  - "quantile regression"
+license: MIT

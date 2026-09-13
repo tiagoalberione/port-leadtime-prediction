@@ -1,0 +1,38 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+env/
+venv/
+.conda/
+
+# Jupyter
+.ipynb_checkpoints/
+*.executed.ipynb
+
+# Local editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated data, models, and outputs
+data/interim/
+data/processed/
+outputs/
+artifacts/
+*.joblib
+
+# Local logs and secrets
+*.log
+.env
+.env.*
+secrets/
+local_config.*

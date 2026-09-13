@@ -1,0 +1,118 @@
+Column1;Column2;Column3;Column4;Column5
+Código Bitrigrama;Nome;UF;Tipo;Ativo
+BRAMW001;ALUMAR - SÃO LUIZ - MA;MA - Maranhão;Porto Privado;sim
+BRADR;ANGRA DOS REIS;RJ - Rio de Janeiro;Porto Organizado;sim
+BRANT;ANTONINA;PR - Paraná;Porto Organizado;sim
+BRARB;ARATU;BA - Bahia;Porto Organizado;sim
+BRARE;AREIA BRANCA (TERMISA);RN - Rio Grande do Norte;Porto Organizado;sim
+BRMAO017;ATEM´S - MANAUS - AM;AM - Amazonas;Porto Privado;sim
+BRPVH011;ATEM´S - PORTO VELHO-RO;RO - Rondônia;Porto Privado;sim
+BRRCH;BARRA DO RIACHO - CODESA;ES - Espírito Santo;Porto Organizado;sim
+BRITJ007;BARRA DO RIO TERMINAL PORTUÁRIO;SC - Santa Catarina;Porto Privado;sim
+BRBEL;BELEM;PA - Pará;Porto Organizado;sim
+BRPA017;BERTOLINI SANTARÉM;PA - Pará;Porto Privado;sim
+BRRS006;BIANCHINI - CANOAS - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRADR002;BRASFELS - ANGRA DOS REIS - RJ;RJ - Rio de Janeiro;Porto Privado;sim
+BRITJ002;BRASKARNE - ITAJAÍ - SC;SC - Santa Catarina;Porto Privado;sim
+BRMCZ002;BRASKEM - MACEIO - AL;AL - Alagoas;Porto Privado;sim
+BRCDO;CABEDELO;PB - Paraíba;Porto Organizado;sim
+BRSE003;CELSE TERMINAL DE REGASEIFICAÇÃO - SE;SE - Sergipe;Porto Privado;sim
+BRMAO006;CHIBATÃO NAVEGAÇÃO E COMÉRCIO LTDA. - MANAUS - AM;AM - Amazonas;Porto Privado;sim
+BRMGU002;CIA FLORESTAL MONTE DOURADO - JARI CELULOSE;PA - Pará;Porto Privado;sim
+BRVIX008;CIA PORTUARIA VILA VELHA - CPVV - ES;ES - Espírito Santo;Porto Privado;sim
+BRBEL003;CIA. REFINADORA DA AMAZÔNIA - PA;PA - Pará;Porto Privado;sim
+BRMAO007;CIMENTO VENCEMOS DO AMAZONAS - MANAUS - AM;AM - Amazonas;Porto Privado;sim
+BRMRS001;CIMPOR;RS - Rio Grande do Sul;Porto Privado;sim
+BRRS013;CMPC - GUAIBA - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRCQD002;COPELMI;RS - Rio Grande do Sul;Porto Privado;sim
+BRSSA005;COTEGIPE - SALVADOR - BA;BA - Bahia;Porto Privado;sim
+BRARB003;DOW BRASIL - ARATU - BA;BA - Bahia;Porto Privado;sim
+BRSSA010;ENSEADA INDÚSTRIA NAVAL S.A.;BA - Bahia;Porto Privado;sim
+BRVIX026;ESTALEIRO JURONG - ARACRUZ - ES;ES - Espírito Santo;Porto Privado;sim
+BRAP003;ETC BERTOLINI SANTANA;AP - Amapá;Porto Privado;sim
+BR400001;FERROPORT - PORTO DO AÇU;RJ - Rio de Janeiro;Porto Privado;sim
+BRARB004;FORD MOTOR - ARATU - BA;BA - Bahia;Porto Privado;sim
+BRFNO;FORNO (ARRAIAL DO CABO);RJ - Rio de Janeiro;Porto Organizado;sim
+BRFOR;FORTALEZA (MUCURIPE);CE - Ceará;Porto Organizado;sim
+BRSSA004;GERDAU AÇOS LONGOS - SALVADOR - BA;BA - Bahia;Porto Privado;sim
+BRITA001;HERMASA DA AMAZÔNIA - ITACOATIARA - AM;AM - Amazonas;Porto Privado;sim
+BRPA045;HIDROVIAS DO BRASIL - MIRITITUBA;PA - Pará;Porto Privado;sim
+BRVDC008;HIDROVIAS DO BRASIL - VILA DO CONDE;PA - Pará;Porto Privado;sim
+BRAM008;IBEPAR MANAUS;AM - Amazonas;Porto Privado;sim
+BRIGI006;ILHA GUAÍBA - ITAGUAÍ - RJ;RJ - Rio de Janeiro;Porto Privado;sim
+BRIOS;ILHEUS;BA - Bahia;Porto Organizado;sim
+BRIBB;IMBITUBA;SC - Santa Catarina;Porto Organizado;sim
+BRIGI;ITAGUAÍ;RJ - Rio de Janeiro;Porto Organizado;sim
+BRITJ;ITAJAÍ;SC - Santa Catarina;Porto Organizado;sim
+BRIOA001;ITAPOA - SC;SC - Santa Catarina;Porto Privado;sim
+BRIQI;ITAQUI;MA - Maranhão;Porto Organizado;sim
+BRAM001;J. F. DE OLIVEIRA NAVEGAÇÃO;AM - Amazonas;Porto Privado;sim
+BRVLL;LAGUNA;SC - Santa Catarina;Porto Organizado;não
+BRMCZ;MACEIÓ;AL - Alagoas;Porto Organizado;sim
+BRARB006;MADRE DE DEUS - TRANSPETRO - BA;BA - Bahia;Porto Privado;sim
+BRMAO;MANAUS;AM - Amazonas;Porto Organizado;sim
+BRPOA040;MERLIN LUDEMAX - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRNAT;NATAL;RN - Rio Grande do Norte;Porto Organizado;sim
+BRNTR;NITERÓI;RJ - Rio de Janeiro;Porto Organizado;sim
+BR400003;NOV FLEXIBLES;RJ - Rio de Janeiro;Porto Privado;não
+BRRS015;OLEOPLAN CANOAS RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRPNG;PARANAGUA;PR - Paraná;Porto Organizado;sim
+BRPEC;PECEM;CE - Ceará;Porto Organizado;sim
+BRPET;PELOTAS;RS - Rio Grande do Sul;Porto Organizado;sim
+BRITJ004;POLY TERMINAIS (DOW QUIMICA) - ITAJAÍ - SC;SC - Santa Catarina;Porto Privado;sim
+BRPMA001;PONTA DA MADEIRA - VALE;MA - Maranhão;Porto Privado;sim
+BRVIX017;PONTA DE UBU - ES - SAMARCO MINERAÇÃO SA;ES - Espírito Santo;Porto Privado;sim
+BRPOA;PORTO ALEGRE - RS;RS - Rio Grande do Sul;Porto Organizado;sim
+BRPA033;PORTO CRAI;PA - Pará;Porto Privado;sim
+BRRJ022;PORTO DO AÇU;RJ - Rio de Janeiro;Porto Privado;sim
+BRIGI009;PORTO SUDESTE;RJ - Rio de Janeiro;Porto Privado;sim
+BRPVH;PORTO VELHO - RO;RO - Rondônia;Porto Organizado;sim
+BRVIX018;PORTOCEL - TERMINAL BARRA DO RIACHO - ES;ES - Espírito Santo;Porto Privado;sim
+BRNVT001;PORTONAVE - NAVEGANTES - SC;SC - Santa Catarina;Porto Privado;sim
+BRVIX016;PRAIA MOLE - ES - CARVÃO - CVRD;ES - Espírito Santo;Porto Privado;sim
+BRREC;RECIFE;PE - Pernambuco;Porto Organizado;sim
+BRRIO;RIO DE JANEIRO;RJ - Rio de Janeiro;Porto Organizado;sim
+BRRIG;RIO GRANDE;RS - Rio Grande do Sul;Porto Organizado;sim
+BRSSA;SALVADOR;BA - Bahia;Porto Organizado;sim
+BRMCP;SANTANA/MACAPA;AP - Amapá;Porto Organizado;sim
+BRSTM;SANTAREM;PA - Pará;Porto Organizado;sim
+BRSSZ;SANTOS;SP - São Paulo;Porto Organizado;sim
+BRSFS;SAO FRANCISCO DO SUL;SC - Santa Catarina;Porto Organizado;sim
+BRSSO;SAO SEBASTIAO;SP - São Paulo;Porto Organizado;sim
+BRSUA;SUAPE;PE - Pernambuco;Porto Organizado;sim
+BRMAO004;SUPER TERMINAIS - MANAUS - AM;AM - Amazonas;Porto Privado;sim
+BRVIX021;TBO - TERMINAL BARCAÇAS OCEÂNICAS ARCELORMITTAL TUBARÃO;ES - Espírito Santo;Porto Privado;sim
+BRTRM001;TEDUT - TERMINAL ALMIRANTE SOARES DUTRA - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRMAO002;TEMAN - PETROBRAS - MANAUS - AM;AM - Amazonas;Porto Privado;sim
+BRITJ005;TEPORTI - TERMINAL PORTUÁRIO DE ITAJAÍ S/A;SC - Santa Catarina;Porto Privado;sim
+BRSFS003;TERFRAN - TERMINAL AQUAVIARIO DE SÃO FRANCISCO DO SUL - SC;SC - Santa Catarina;Porto Privado;sim
+BRVDC005;TERFRON - TERMINAL FRONTEIRA NORTE LOGISTICA S.A;PA - Pará;Porto Privado;sim
+BRQNS004;TERGASUL - CANOAS - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRSE002;TERMINAL AQUAVIARIO DE ARACAJU;SE - Sergipe;Porto Privado;sim
+BR252001;TERMINAL AQUAVIÁRIO DE GUAMARÉ;RN - Rio Grande do Norte;Porto Privado;sim
+BRRS010;TERMINAL AQUAVIÁRIO DE NITERÓI - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRSSO002;TERMINAL AQUAVIÁRIO DE SÃO SEBASTIÃO - ALMIRANTE BARROSO - SP;SP - São Paulo;Porto Privado;sim
+BRES008;TERMINAL AQUAVIÁRIO DO NORTE CAPIXABA - ES;ES - Espírito Santo;Porto Privado;sim
+BR997001;TERMINAL BELMONTE - BA;BA - Bahia;Porto Privado;sim
+BRVIX025;TERMINAL DE BENTO FERREIRA - ZEMAX;ES - Espírito Santo;Porto Privado;sim
+BRBA004;TERMINAL DE CARAVELAS;BA - Bahia;Porto Privado;sim
+BRVDC003;TERMINAL DE GRÃOS PONTA DA MONTANHA - BARCARENA;PA - Pará;Porto Privado;sim
+BRMGU001;TERMINAL FLUVIAL CAULIM - CADAM - PA;PA - Pará;Porto Privado;sim
+BR052001;TERMINAL FLUVIAL DE JURUTI;PA - Pará;Porto Privado;sim
+BRTMT001;TERMINAL FLUVIAL MRN TROMBETAS - SANTARÉM - PA;PA - Pará;Porto Privado;sim
+BRVDC004;TERMINAL FLUVIAL RIO CAPIM CAULIM S/A - BARCARENA - PA;PA - Pará;Porto Privado;sim
+BRMEA001;TERMINAL PETROBRÁS - MACAÉ - RJ;RJ - Rio de Janeiro;Porto Privado;sim
+BRADR003;TERMINAL TRANSPETRO - ANGRA DOS REIS - RJ;RJ - Rio de Janeiro;Porto Privado;sim
+BR147001;TESC - TERMINAL SANTA CLARA - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRITA004;TFB - EQUADOR LOG - ITACOATIARA - AM;AM - Amazonas;Porto Privado;sim
+BRIGI008;THYSSENKRUPP TERNIUM BR;RJ - Rio de Janeiro;Porto Privado;sim
+BRPET001;TLP - TERMINAL LOGISTICO PELOTAS - RS;RS - Rio Grande do Sul;Porto Privado;sim
+BRBAR001;TMIB - TERMINAL INACIO BARBOSA - BARRA DOS COQUEIROS;SE - Sergipe;Porto Privado;sim
+BRVIX014;TPS - TERMINAL PRIVATIVO E DE USO MISTO PRAIA MOLE;ES - Espírito Santo;Porto Privado;sim
+BRARB009;TRBA - TERMINAL DE REGAISEFICAÇÃO DE GAS NATURAL;BA - Bahia;Porto Privado;sim
+BRMAO005;TRIGOLAR - OCRIM;AM - Amazonas;Porto Privado;sim
+BRVIX013;TUBARÃO - ES - CVRD;ES - Espírito Santo;Porto Privado;sim
+BRVDC;VILA DO CONDE;PA - Pará;Porto Organizado;sim
+BRVIX;VITÓRIA;ES - Espírito Santo;Porto Organizado;sim
+BRRS028;YARA CANOAS;RS - Rio Grande do Sul;Porto Privado;sim
+BRRS022;YARA PORTO ALEGRE;RS - Rio Grande do Sul;Porto Privado;sim

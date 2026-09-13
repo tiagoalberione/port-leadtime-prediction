@@ -1,25 +1,18 @@
 {
   "title": "Brazilian Port Calls & Lead Time 2023-2025",
-  "id": "tiagoalberione/brazilian-port-calls-lead-time-2023-2025",
-  "subtitle": "Cleaned Brazilian vessel port-call data for lead-time and machine learning studies",
+  "subtitle": "Brazilian port-call data for lead-time and machine learning",
   "description": "Academic snapshot of cleaned Brazilian port-call records for EDA, regression, quantile regression, and supply chain lead-time studies. Manual port coordinates and municipality fields are excluded from the public Kaggle outputs; attribution is required for Porto Sem Papel / Ministerio de Portos e Aeroportos and Open-Meteo.",
-  "isPrivate": false,
+  "id": "tiagoalberione/brazilian-port-calls-lead-time-2023-2025",
   "licenses": [
     {
       "name": "CC-BY-4.0"
     }
   ],
   "keywords": [
-    "machine learning",
-    "supply chain",
-    "maritime",
-    "ports",
     "brazil",
     "regression",
-    "logistics",
-    "time series"
-  ],
-  "updateFrequency": "never",
-  "suggestedSlug": "brazilian-port-calls-lead-time-2023-2025",
-  "licenseReview": "Prepared for CC BY 4.0 publication after excluding manual geography fields from public outputs."
+    "artificial intelligence",
+    "time series analysis",
+    "government"
+  ]
 }

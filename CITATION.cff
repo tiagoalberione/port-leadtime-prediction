@@ -6,7 +6,7 @@ authors:
     given-names: "Tiago"
 type: software
 date-released: 2026-09-13
-version: "1.0.0"
+version: "1.1.1"
 repository-code: "https://github.com/tiagoalberione/port-leadtime-prediction"
 abstract: "Academic workflow for modeling vessel port stay duration in Brazilian ports using public maritime data, temporal features, weather enrichment, point regression, quantile regression, and safety-stock scenario analysis."
 keywords:

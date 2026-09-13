@@ -37,6 +37,16 @@ Main sources and inputs:
 
 The public source URLs used during the project are listed in `data/downloaded/urls.txt`. See `data/README.md` for the data policy and regeneration notes.
 
+Public Kaggle dataset:
+https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-calls-lead-time-2023-2025
+
+The Kaggle release provides two views:
+
+- an analytical dataset for EDA and statistical exploration;
+- a model-ready dataset with leakage-safe predictors and the official temporal splits.
+
+Both CSV and Parquet formats are available, together with a machine-readable data dictionary and source/provenance documentation.
+
 ## Methodology
 
 The workflow follows the thesis structure:
@@ -93,6 +103,10 @@ data/
   downloaded/           Downloaded source files and source URL references
   interim/              Generated intermediate datasets, ignored by Git
   processed/            Generated analytical dataset, ignored by Git
+kaggle/
+  dataset/              Kaggle documentation and data dictionary
+  reference/            Public reference data used for redistribution
+  notebooks/            Notes for future Kaggle notebooks
 notebooks/
   01_eda_cap3_final.ipynb
   02_modeling_cap4_final.ipynb
@@ -100,6 +114,7 @@ pipelines/
   build_eda_base.py     Rebuilds the analytical dataset
 scripts/
   run_cap4_rebuild.py   Canonical heavy rebuild of Chapter 4 artifacts
+  build_kaggle_dataset.py
 src/                    Data preparation and feature engineering code
 results/                Tracked numerical artifacts used to audit thesis results
 outputs/                Generated figures and tables, ignored by Git
@@ -111,15 +126,15 @@ tests/                  Smoke and anti-leakage tests
 The audited environment used Python 3.11.
 
 ```bash
-conda create -n mbausp python=3.11
-conda activate mbausp
+conda create -n port-leadtime python=3.11
+conda activate port-leadtime
 pip install -r requirements.txt
 ```
 
 You can also run commands through conda without activating the environment:
 
 ```bash
-conda run -n mbausp python --version
+conda run -n port-leadtime python --version
 ```
 
 ## Running The Project
@@ -127,7 +142,7 @@ conda run -n mbausp python --version
 Rebuild the analytical dataset:
 
 ```bash
-conda run -n mbausp python pipelines/build_eda_base.py
+conda run -n port-leadtime python pipelines/build_eda_base.py
 ```
 
 Expected main output:
@@ -172,11 +187,15 @@ The tracked `results/` files are intentionally kept because they document the nu
 
 ## Future Work
 
-Potential extensions include updating the public-data download process, adding a cleaner data-release strategy for large files, testing the workflow in a fresh CI environment, and comparing the port-stay proxy with complete logistics lead-time data if such data become available.
+Potential extensions include publishing reproducible Kaggle notebooks, evaluating additional models, updating the public-data snapshot, and comparing the port-stay proxy with complete logistics lead-time data if such data become available.
 
 ## License
 
-Code in this repository is released under the MIT License. Data files remain subject to the terms and availability of their original public sources. See `LICENSE` and `data/README.md`.
+Code: MIT License.
+
+Public Kaggle dataset: CC BY 4.0.
+
+Original public sources remain subject to their respective terms and attribution requirements. See `kaggle/SOURCES.md` for provenance and source-specific licensing notes.
 
 ## Citation
 

@@ -49,6 +49,8 @@ def test_kaggle_metadata_schema_matches_public_csv_order_if_output_exists():
     assert [field["name"] for field in fields] == read_csv_column_order(PUBLIC_CSV_PATH)
     assert len(fields) == 124
     assert all(str(field.get("description", "")).strip() for field in fields)
+    assert all(str(field.get("title", "")).strip() for field in fields)
+    assert all(field["title"] == field["description"] for field in fields)
     assert all(field["type"] in {"string", "boolean", "integer", "numeric", "datetime"} for field in fields)
 
 

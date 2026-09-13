@@ -112,8 +112,9 @@ def build_schema(csv_path: Path, dictionary: pd.DataFrame) -> dict[str, list[dic
         fields.append(
             {
                 "name": column,
-                "type": kaggle_type(row["dtype"]),
                 "description": description,
+                "title": description,
+                "type": kaggle_type(row["dtype"]),
             }
         )
     if missing:
@@ -192,6 +193,10 @@ def validate_metadata(metadata: dict[str, Any]) -> None:
         raise RuntimeError("Schema field order does not match the public CSV column order.")
     if any(not str(field.get("description", "")).strip() for field in fields):
         raise RuntimeError("At least one schema field has an empty description.")
+    if any(not str(field.get("title", "")).strip() for field in fields):
+        raise RuntimeError("At least one schema field has an empty title.")
+    if any(field.get("title") != field.get("description") for field in fields):
+        raise RuntimeError("At least one schema field has title different from description.")
     if any(field.get("type") not in {"string", "boolean", "integer", "numeric", "datetime"} for field in fields):
         raise RuntimeError("At least one schema field has an unsupported Kaggle type.")
 

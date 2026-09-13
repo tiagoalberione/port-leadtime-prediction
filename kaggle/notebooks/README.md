@@ -4,21 +4,25 @@ This folder contains public notebooks intended for the single-file Kaggle datase
 
 https://www.kaggle.com/datasets/tiagoalberione/brazilian-port-lead-time-2023-2025
 
-## Available Notebook
+## Available Notebooks
 
 ```text
 01_brazilian_port_lead_time_eda_baseline.ipynb
+02_brazilian_port_lead_time_quantile_uncertainty.ipynb
 ```
 
-Title:
+Titles:
 
 ```text
 Brazilian Port Lead Time - EDA and Leakage-Aware Baseline Modeling
+Brazilian Port Lead Time - Quantile Regression & Uncertainty
 ```
 
 ## Objective
 
-This first notebook is the recommended entry point for users of the public dataset. It introduces the unit of observation, target, official temporal splits, leakage-aware modeling rule, concise exploratory analysis, a global-median baseline, and one simple `HistGradientBoostingRegressor` machine-learning baseline.
+Notebook 01 is the recommended entry point for users of the public dataset. It introduces the unit of observation, target, official temporal splits, leakage-aware modeling rule, concise exploratory analysis, a global-median baseline, and one simple `HistGradientBoostingRegressor` machine-learning baseline.
+
+Notebook 02 extends the public baseline from point prediction to quantile regression. It explains P50, P90, and P95 lead-time estimates, checks empirical coverage, diagnoses quantile crossing, and analyzes prediction-uncertainty width without introducing safety-stock or working-capital simulation.
 
 ## Dataset Dependency
 
@@ -38,12 +42,12 @@ Repository documentation files such as `kaggle/SOURCES.md`, `kaggle/DATA_DICTION
 
 ## Modeling Scope
 
-The notebook is intentionally small and educational. It does not reproduce the full thesis workflow, does not run hyperparameter searches, and does not include quantile regression, uncertainty analysis, or safety-stock simulation.
+The notebooks are intentionally small and educational. They do not reproduce the full thesis workflow, do not run hyperparameter searches, and do not include safety-stock simulation.
 
 ## Leakage Policy
 
-The model uses only columns present in the model-ready CSV after excluding `port_call_id`, `arrival_port_ts`, `t_total_port_stay_h`, and `split`. It keeps `final_test` untouched until the final locked evaluation.
+The models use only columns present in the model-ready CSV after excluding `port_call_id`, `arrival_port_ts`, `t_total_port_stay_h`, and `split`. They keep `final_test` untouched until the final locked evaluation.
 
 ## Future Notebooks
 
-Later public notebooks may cover quantile regression, uncertainty intervals, calibration, and supply-chain safety-stock applications using the same dataset and leakage-aware temporal protocol.
+A future third public notebook may translate probabilistic lead-time estimates into supply-chain safety-stock applications using the same dataset and leakage-aware temporal protocol.
